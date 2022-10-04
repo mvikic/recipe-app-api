@@ -59,7 +59,7 @@ def create_user(**params):
     return get_user_model().objects.create_user(**params)
 
 
-class PublicRecipeAPITests(TestCase):
+class PublicRecipeApiTests(TestCase):
     """Test unauthenticated API requests."""
 
     def setUp(self):
@@ -72,7 +72,7 @@ class PublicRecipeAPITests(TestCase):
         self.assertEqual(res.status_code, status.HTTP_401_UNAUTHORIZED)
 
 
-class PrivateRecipeAPITests(TestCase):
+class PrivateRecipeApiTests(TestCase):
     """Test authenticated API requests."""
 
     def setUp(self):
@@ -265,7 +265,7 @@ class PrivateRecipeAPITests(TestCase):
         self.assertIn(new_tag, recipe.tags.all())
 
     def test_update_recipe_assign_tag(self):
-        """Test assigning an existing tag when creating a recipe."""
+        """Test assigning an existing tag when updating a recipe."""
         tag_breakfast = Tag.objects.create(user=self.user, name='Breakfast')
         recipe = create_recipe(user=self.user)
         recipe.tags.add(tag_breakfast)
@@ -388,7 +388,7 @@ class PrivateRecipeAPITests(TestCase):
         r2.tags.add(tag2)
         r3 = create_recipe(user=self.user, title='Fish and chips')
 
-        params = {'tags': f'{tag1.id}, {tag2.id}'}
+        params = {'tags': f'{tag1.id},{tag2.id}'}
         res = self.client.get(RECIPES_URL, params)
 
         s1 = RecipeSerializer(r1)
